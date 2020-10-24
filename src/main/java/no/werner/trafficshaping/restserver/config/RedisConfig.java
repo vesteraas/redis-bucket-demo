@@ -21,8 +21,4 @@ public class RedisConfig {
 
     @NotNull
     private String cacheName;
-
-    @NotNull
-    @DurationUnit(ChronoUnit.SECONDS)
-    private Duration expiry;
 }

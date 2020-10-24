@@ -3,8 +3,7 @@ application:
     host: 127.0.0.1
     port: 6379
     password: ok
-    cache-name: test
-    expiry: 60s
+    cache-name: buckets
 
   account-types:
     - name: LOUSY
