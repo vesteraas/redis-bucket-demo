@@ -16,7 +16,6 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Testcontainers
 class IntegrationTest {
+
+    public static final String X_RATE_LIMIT_REMAINING = "X-Rate-Limit-Remaining";
 
     @Container
     private static final GenericContainer<?> redis = new GenericContainer<>("redis")
@@ -39,11 +40,6 @@ class IntegrationTest {
     private MockMvc mvc;
 
     @Test
-    void test() {
-        assertTrue(redis.isRunning());
-    }
-
-    @Test
     void sendShouldWorkThenFail() throws Exception {
         SMS sms = SMS.builder().shortNumber("20000").from("555-1212").to("555-2424").content("Testing").build();
 
@@ -55,7 +51,7 @@ class IntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is(204))
-                .andExpect(header().string("X-Rate-Limit-Remaining", "0"));
+                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "0"));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)
@@ -78,7 +74,7 @@ class IntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is(204))
-                .andExpect(header().string("X-Rate-Limit-Remaining", "1"));
+                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "1"));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)
@@ -86,7 +82,7 @@ class IntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is(204))
-                .andExpect(header().string("X-Rate-Limit-Remaining", "0"));
+                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "0"));
     }
 
     @Test
@@ -101,7 +97,7 @@ class IntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is(204))
-                .andExpect(header().string("X-Rate-Limit-Remaining", "1"));
+                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "1"));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)
@@ -109,7 +105,7 @@ class IntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is(204))
-                .andExpect(header().string("X-Rate-Limit-Remaining", "0"));
+                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "0"));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)

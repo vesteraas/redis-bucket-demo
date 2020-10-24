@@ -1,6 +1,9 @@
 package no.werner.trafficshaping.restserver.spring;
 
+import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.grid.GridBucketState;
+import io.github.bucket4j.grid.ProxyManager;
+import io.github.bucket4j.grid.jcache.JCache;
 import lombok.RequiredArgsConstructor;
 import no.werner.trafficshaping.restserver.config.ApplicationConfig;
 import no.werner.trafficshaping.restserver.config.RedisConfig;
@@ -17,12 +20,12 @@ import javax.cache.configuration.MutableConfiguration;
 
 @Configuration
 @RequiredArgsConstructor
-public class JCacheContext {
+public class ProxyManagerContext {
 
     private final ApplicationConfig applicationConfig;
 
     @Bean
-    public Cache<String, GridBucketState> getCache() {
+    public ProxyManager<String> getProxyManager() {
         final RedisConfig redisConfig = applicationConfig.getRedis();
 
         final Config redissonConfig = new Config();
@@ -37,9 +40,11 @@ public class JCacheContext {
 
         final CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
 
-        return cacheManager.createCache(
+        Cache<String, GridBucketState> cache = cacheManager.createCache(
                 redisConfig.getCacheName(),
                 RedissonConfiguration.fromConfig(redissonConfig, completeConfiguration)
         );
+
+        return Bucket4j.extension(JCache.class).proxyManagerForCache(cache);
     }
 }
