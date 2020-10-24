@@ -13,7 +13,23 @@ application:
 
     - name: MEDIOCRE
       duration: 1s
-      messages-per-duration: 1
+      messages-per-duration: 2
+
+    - name: BRONZE
+      duration: 1s
+      messages-per-duration: 5
+
+    - name: SILVER
+      duration: 1s
+      messages-per-duration: 10
+
+    - name: GOLD
+      duration: 1s
+      messages-per-duration: 20
+
+    - name: PLATINUM
+      duration: 1s
+      messages-per-duration: 50
 
   account-configs:
     - short-number: 20000
@@ -21,3 +37,18 @@ application:
 
     - short-number: 21111
       type: MEDIOCRE
+
+    - short-number: 22222
+      type: MEDIOCRE
+
+    - short-number: 23333
+      type: BRONZE
+
+    - short-number: 24444
+      type: SILVER
+
+    - short-number: 25555
+      type: GOLD
+
+    - short-number: 26666
+      type: PLATINUM
