@@ -31,7 +31,7 @@ class IntegrationTest {
             .withCommand("--requirepass ok");
 
     @DynamicPropertySource
-    static void registerPgProperties(DynamicPropertyRegistry registry) {
+    static void registerRedisPortProperty(DynamicPropertyRegistry registry) {
         registry.add("application.redis.port", () -> redis.getMappedPort(6379));
     }
 
@@ -45,7 +45,7 @@ class IntegrationTest {
 
     @Test
     void sendShouldWorkThenFail() throws Exception {
-        SMS sms = SMS.builder().shortNumber("20000").from("4793272429").to("4745299039").content("Testing").build();
+        SMS sms = SMS.builder().shortNumber("20000").from("555-1212").to("555-2424").content("Testing").build();
 
         String json = new ObjectMapper().writeValueAsString(sms);
 
@@ -68,7 +68,7 @@ class IntegrationTest {
 
     @Test
     void sendShouldWorkBothTimes() throws Exception {
-        SMS sms = SMS.builder().shortNumber("21111").from("4793272429").to("4745299039").content("Testing").build();
+        SMS sms = SMS.builder().shortNumber("21111").from("555-1212").to("555-2424").content("Testing").build();
 
         String json = new ObjectMapper().writeValueAsString(sms);
 
@@ -91,7 +91,7 @@ class IntegrationTest {
 
     @Test
     void sendShouldFailTheThirdTime() throws Exception {
-        SMS sms = SMS.builder().shortNumber("22222").from("4793272429").to("4745299039").content("Testing").build();
+        SMS sms = SMS.builder().shortNumber("22222").from("555-1212").to("555-2424").content("Testing").build();
 
         String json = new ObjectMapper().writeValueAsString(sms);
 
