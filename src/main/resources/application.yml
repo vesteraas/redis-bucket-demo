@@ -1,0 +1,23 @@
+application:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: ok
+    cache-name: test
+    expiry: 60s
+
+  account-types:
+    - name: LOUSY
+      duration: 1d
+      messages-per-duration: 1
+
+    - name: MEDIOCRE
+      duration: 1s
+      messages-per-duration: 1
+
+  account-configs:
+    - short-number: 20000
+      type: LOUSY
+
+    - short-number: 21111
+      type: MEDIOCRE
