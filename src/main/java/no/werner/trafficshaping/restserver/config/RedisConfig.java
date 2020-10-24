@@ -6,7 +6,6 @@ import org.springframework.boot.convert.DurationUnit;
 import javax.validation.constraints.NotNull;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Data
 public class RedisConfig {

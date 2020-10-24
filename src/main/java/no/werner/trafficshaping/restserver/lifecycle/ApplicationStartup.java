@@ -3,6 +3,7 @@ package no.werner.trafficshaping.restserver.lifecycle;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.Refill;
+import io.github.bucket4j.grid.GridBucketState;
 import io.github.bucket4j.grid.ProxyManager;
 import io.github.bucket4j.grid.jcache.JCache;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.cache.Cache;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static io.github.bucket4j.Bandwidth.classic;
 import static io.github.bucket4j.Refill.intervally;
@@ -32,12 +31,12 @@ public class ApplicationStartup {
     private final ApplicationConfig applicationConfig;
     private final AccountService accountService;
     private final BandwidthService bandwidthService;
-    private final Cache cache;
+    private final Cache<String, GridBucketState> cache;
 
-    private ProxyManager proxyManager;
+    private ProxyManager<String> proxyManager;
 
     @Bean
-    public ProxyManager getProxyManager() {
+    public ProxyManager<String> getProxyManager() {
         return proxyManager;
     }
 
@@ -45,7 +44,7 @@ public class ApplicationStartup {
     public void startup() {
         Map<String, Account> accounts = new HashMap<>();
 
-        applicationConfig.getAccountConfigs().stream()
+        applicationConfig.getAccountConfigs()
                 .forEach(accountConfig -> {
                     final Account account = Account.builder()
                             .shortNumber(accountConfig.getShortNumber())

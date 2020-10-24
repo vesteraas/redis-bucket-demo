@@ -26,7 +26,7 @@ public class SMSController {
 
     private final AccountService accountService;
     private final BandwidthService bandwidthService;
-    private final ProxyManager buckets;
+    private final ProxyManager<String> buckets;
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResponseEntity<Void> send(@RequestBody SMS sms) {

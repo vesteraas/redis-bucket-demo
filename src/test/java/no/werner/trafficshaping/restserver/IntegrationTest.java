@@ -1,4 +1,4 @@
-package no.werner.trafficshaping.restserver.controller;
+package no.werner.trafficshaping.restserver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import no.werner.trafficshaping.restserver.domain.SMS;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
-class SMSControllerTest {
+class IntegrationTest {
 
     @Container
     private static final GenericContainer<?> redis = new GenericContainer<>("redis")

@@ -1,4 +1,4 @@
-package no.werner.trafficshaping.restserver.client;
+package no.werner.trafficshaping.restserver.spring;
 
 import io.github.bucket4j.grid.GridBucketState;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ import javax.cache.configuration.MutableConfiguration;
 
 @Configuration
 @RequiredArgsConstructor
-public class JCacheClient {
+public class JCacheContext {
 
     private final ApplicationConfig applicationConfig;
 
     @Bean
-    public Cache getCache() {
+    public Cache<String, GridBucketState> getCache() {
         final RedisConfig redisConfig = applicationConfig.getRedis();
 
         final Config redissonConfig = new Config();
