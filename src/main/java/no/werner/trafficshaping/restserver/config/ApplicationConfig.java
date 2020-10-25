@@ -17,10 +17,6 @@ public class ApplicationConfig {
 
     @NotNull
     @Valid
-    RedisConfig redis;
-
-    @NotNull
-    @Valid
     private List<AccountType> accountTypes;
 
     @NotNull

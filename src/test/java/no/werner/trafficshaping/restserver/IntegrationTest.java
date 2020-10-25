@@ -21,20 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Testcontainers
 class IntegrationTest {
 
     public static final String X_RATE_LIMIT_REMAINING = "X-Rate-Limit-Remaining";
-
-    @Container
-    private static final GenericContainer<?> redis = new GenericContainer<>("redis")
-            .withExposedPorts(6379)
-            .withCommand("--requirepass ok");
-
-    @DynamicPropertySource
-    static void registerRedisPortProperty(DynamicPropertyRegistry registry) {
-        registry.add("application.redis.port", () -> redis.getMappedPort(6379));
-    }
 
     @Autowired
     private MockMvc mvc;
