@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -16,15 +15,12 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
 class IntegrationTest {
-
-    public static final String X_RATE_LIMIT_REMAINING = "X-Rate-Limit-Remaining";
 
     @Container
     private static final GenericContainer<?> redis = new GenericContainer<>("redis")
@@ -50,16 +46,14 @@ class IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().is(204))
-                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "0"));
+                .andExpect(status().is(204));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().is(429))
-                .andExpect(header().exists(HttpHeaders.RETRY_AFTER));
+                .andExpect(status().is(429));
     }
 
     @Test
@@ -73,16 +67,14 @@ class IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().is(204))
-                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "1"));
+                .andExpect(status().is(204));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().is(204))
-                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "0"));
+                .andExpect(status().is(204));
     }
 
     @Test
@@ -96,23 +88,20 @@ class IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().is(204))
-                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "1"));
+                .andExpect(status().is(204));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().is(204))
-                .andExpect(header().string(X_RATE_LIMIT_REMAINING, "0"));
+                .andExpect(status().is(204));
 
         mvc.perform(MockMvcRequestBuilders.post("/send")
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().is(429))
-                .andExpect(header().exists(HttpHeaders.RETRY_AFTER));
+                .andExpect(status().is(429));
     }
 }

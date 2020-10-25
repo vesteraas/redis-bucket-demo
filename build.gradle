@@ -23,9 +23,7 @@ ext {
 }
 
 dependencies {
-	implementation 'com.github.vladimir-bukhtoyarov:bucket4j-core:5.0.0-beta.01-09-2020'
-	implementation 'javax.cache:cache-api:1.1.1'
-	implementation 'org.redisson:redisson:3.13.1'
+	implementation 'es.moki.ratelimitj:ratelimitj-redis:0.6.0'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation "org.springframework.boot:spring-boot-starter-validation"

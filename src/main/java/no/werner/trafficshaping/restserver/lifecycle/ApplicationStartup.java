@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.werner.trafficshaping.restserver.config.ApplicationConfig;
 import no.werner.trafficshaping.restserver.service.AccountService;
-import no.werner.trafficshaping.restserver.service.BandwidthService;
+import no.werner.trafficshaping.restserver.service.RateLimiterService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -16,12 +16,12 @@ public class ApplicationStartup {
 
     private final ApplicationConfig applicationConfig;
     private final AccountService accountService;
-    private final BandwidthService bandwidthService;
+    private final RateLimiterService rateLimiterService;
 
     @PostConstruct
     public void startup() {
         accountService.initializeAccounts(applicationConfig.getAccountConfigs());
-        bandwidthService.initializeBandwidths(applicationConfig.getAccountTypes());
+        rateLimiterService.initializeBandwidths(applicationConfig.getAccountTypes());
 
         log.info("Application started!");
     }
