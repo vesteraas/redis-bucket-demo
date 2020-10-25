@@ -22,4 +22,8 @@ public class ApplicationConfig {
     @NotNull
     @Valid
     private List<AccountConfig> accountConfigs;
+
+    @NotNull
+    @Valid
+    private CacheConfig cache;
 }
