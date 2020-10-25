@@ -8,6 +8,7 @@ import org.redisson.Redisson;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
+import org.redisson.config.SingleServerConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,9 +26,13 @@ public class RMapBasedRedissonBackendContext {
 
         final Config config = new Config();
 
-        config.useSingleServer()
-                .setAddress(String.format("redis://%s:%d", redisConfig.getHost(), redisConfig.getPort()))
-                .setPassword(redisConfig.getPassword());
+        SingleServerConfig singleServerConfig =
+                config.useSingleServer()
+                        .setAddress(String.format("redis://%s:%d", redisConfig.getHost(), redisConfig.getPort()));
+
+        if (redisConfig.getPassword() != null) {
+            singleServerConfig.setPassword(redisConfig.getPassword());
+        }
 
         final RedissonClient redisson = Redisson.create(config);
 

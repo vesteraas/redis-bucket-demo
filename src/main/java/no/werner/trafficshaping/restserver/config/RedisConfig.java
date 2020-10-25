@@ -13,7 +13,6 @@ public class RedisConfig {
     @NotNull
     private Integer port;
 
-    @NotNull
     private String password;
 
     @NotNull
