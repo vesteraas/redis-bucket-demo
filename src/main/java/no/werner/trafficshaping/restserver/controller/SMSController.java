@@ -1,15 +1,14 @@
 package no.werner.trafficshaping.restserver.controller;
 
 import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Bucket4j;
 import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.ConsumptionProbe;
-import io.github.bucket4j.grid.ProxyManager;
 import lombok.RequiredArgsConstructor;
 import no.werner.trafficshaping.restserver.domain.Account;
 import no.werner.trafficshaping.restserver.domain.SMS;
 import no.werner.trafficshaping.restserver.service.AccountService;
 import no.werner.trafficshaping.restserver.service.BandwidthService;
+import no.werner.trafficshaping.restserver.spring.RMapBasedRedissonBackend;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class SMSController {
 
     private final AccountService accountService;
     private final BandwidthService bandwidthService;
-    private final ProxyManager<String> buckets;
+    private final RMapBasedRedissonBackend backend;
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResponseEntity<Void> send(@RequestBody SMS sms) {
@@ -35,7 +34,7 @@ public class SMSController {
 
         final Account account = accountService.getAccount(shortNumber);
 
-        Bucket bucket = buckets.getProxy(shortNumber, getConfigSupplierForAccount(account.getType()));
+        Bucket bucket = backend.builder().buildProxy(shortNumber, getConfigSupplierForAccount(account.getType()));
         ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
 
         if (probe.isConsumed()) {
@@ -52,7 +51,7 @@ public class SMSController {
     }
 
     private Supplier<BucketConfiguration> getConfigSupplierForAccount(String type) {
-        return () -> Bucket4j.configurationBuilder()
+        return () -> BucketConfiguration.builder()
                 .addLimit(bandwidthService.getBandwidth(type))
                 .build();
     }
