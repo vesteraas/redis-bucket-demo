@@ -24,15 +24,17 @@ public class HazelcastContext {
 
     @Bean
     public ProxyManager<String> getCache() {
+        String cacheName = applicationConfig.getCache().getName();
+
         Config config = new Config();
         config.setLiteMember(false);
         CacheSimpleConfig cacheConfig = new CacheSimpleConfig();
-        cacheConfig.setName("buckets");
+        cacheConfig.setName(cacheName);
         config.addCacheConfig(cacheConfig);
 
         HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);
         ICacheManager cacheManager = hazelcastInstance.getCacheManager();
-        Cache<String, GridBucketState> cache = cacheManager.getCache(applicationConfig.getCache().getName());
+        Cache<String, GridBucketState> cache = cacheManager.getCache(cacheName);
 
         return Bucket4j.extension(JCache.class).proxyManagerForCache(cache);
     }
