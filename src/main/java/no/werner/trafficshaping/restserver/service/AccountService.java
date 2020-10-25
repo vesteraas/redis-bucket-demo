@@ -12,7 +12,7 @@ import java.util.Map;
 @Service
 public class AccountService {
 
-    private Map<String, Account> accounts = new HashMap<>();
+    private Map<String, Account> accounts;
 
     public Account getAccount(String shortNumber) {
         return accounts.get(shortNumber);

@@ -26,10 +26,11 @@ public class HazelcastContext {
     public ProxyManager<String> getCache() {
         String cacheName = applicationConfig.getCache().getName();
 
-        Config config = new Config();
-        config.setLiteMember(false);
         CacheSimpleConfig cacheConfig = new CacheSimpleConfig();
         cacheConfig.setName(cacheName);
+
+        Config config = new Config();
+        config.setLiteMember(false);
         config.addCacheConfig(cacheConfig);
 
         HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);

@@ -15,7 +15,7 @@ import static io.github.bucket4j.Refill.intervally;
 @Service
 public class BandwidthService {
 
-    private Map<String, Bandwidth> bandwidths = new HashMap<>();
+    private Map<String, Bandwidth> bandwidths;
 
     public Bandwidth getBandwidth(String shortNumber) {
         return bandwidths.get(shortNumber);
