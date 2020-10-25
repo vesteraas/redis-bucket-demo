@@ -26,4 +26,8 @@ public class ApplicationConfig {
     @NotNull
     @Valid
     private CacheConfig cache;
+
+    @NotNull
+    @Valid
+    private NetworkConfig network;
 }

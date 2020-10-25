@@ -2,6 +2,12 @@ application:
   cache:
     name: buckets
 
+  network:
+    multicast-enabled: true
+    aws-enabled: false
+    interfaces-enabled: false
+    interfaces:
+
   account-types:
     - name: LOUSY
       duration: 1d
