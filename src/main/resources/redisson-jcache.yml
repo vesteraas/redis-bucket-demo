@@ -1,5 +1,0 @@
-singleServerConfig:
-  address: "redis://127.0.0.1:6379"
-  connectTimeout: 1000
-  timeout: 3000
-codec: !<org.redisson.codec.SerializationCodec> {}
