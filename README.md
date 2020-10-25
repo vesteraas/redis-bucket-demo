@@ -1,19 +1,9 @@
-# redis-bucket-demo
+# hazelcast-bucket-demo
 
 Simple Spring Boot web appliation demonstrating the use of the [Bucket4J](https://github.com/vladimir-bukhtoyarov/bucket4j)
 library, using Hazelcast, via the JCache API (JSR 107).
 
-The integration test uses [TestContainers from JUnit 5](https://www.testcontainers.org/test_framework_integration/junit_5)
-to start a Redis instance in a Docker container.
-
-If you want to run the application, you should have a Redis server running.  The simplest way of starting one is by
-using Docker:
-
-```
-docker run --name some-redis -p 6379:6379 -d redis --requirepass ok
-```
-
-Then, build and run two instances of the application:
+Build and run two instances of the application:
 
 ```
 ./gradlew clean build
