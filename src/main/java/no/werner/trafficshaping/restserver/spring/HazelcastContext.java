@@ -22,7 +22,7 @@ public class HazelcastContext {
     private final ApplicationConfig applicationConfig;
 
     @Bean
-    public ProxyManager<String> getCache() {
+    public HazelcastInstance getInstance() {
         String cacheName = applicationConfig.getCache().getName();
 
         CacheSimpleConfig cacheConfig = new CacheSimpleConfig();
@@ -33,7 +33,15 @@ public class HazelcastContext {
         config.addCacheConfig(cacheConfig);
         config.setNetworkConfig(getNetworkConfig(applicationConfig.getNetwork()));
 
-        HazelcastInstance hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+        return Hazelcast.newHazelcastInstance(config);
+    }
+
+    @Bean
+    public ProxyManager<String> getCache() {
+        String cacheName = applicationConfig.getCache().getName();
+
+        HazelcastInstance hazelcastInstance = getInstance();
+
         ICacheManager cacheManager = hazelcastInstance.getCacheManager();
         Cache<String, GridBucketState> cache = cacheManager.getCache(cacheName);
 

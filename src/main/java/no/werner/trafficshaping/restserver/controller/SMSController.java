@@ -6,6 +6,7 @@ import io.github.bucket4j.BucketConfiguration;
 import io.github.bucket4j.ConsumptionProbe;
 import io.github.bucket4j.grid.ProxyManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import no.werner.trafficshaping.restserver.domain.Account;
 import no.werner.trafficshaping.restserver.domain.SMS;
 import no.werner.trafficshaping.restserver.service.AccountService;
@@ -22,6 +23,7 @@ import java.util.function.Supplier;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class SMSController {
 
     private final AccountService accountService;
@@ -39,10 +41,14 @@ public class SMSController {
         ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
 
         if (probe.isConsumed()) {
+            log.info("Sending message using short number {}", shortNumber);
+
             return ResponseEntity.noContent()
                     .header("X-Rate-Limit-Remaining", Long.toString(probe.getRemainingTokens()))
                     .build();
         } else {
+            log.warn("Rate exceeded for message using short number {}", shortNumber);
+
             long waitForRefill = probe.getNanosToWaitForRefill() / 1_000_000_000;
 
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
