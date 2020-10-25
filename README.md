@@ -1,8 +1,7 @@
 # redis-bucket-demo
 
-Simple Spring Boot web appliation demonstrating the use of the [Bucket4J](https://github.com/vladimir-bukhtoyarov/bucket4j)
-library, using Redis as a back-end, via the JCache API (JSR 107).  The application uses the JCache implementation of the
-[Redisson](https://github.com/redisson/redisson) Redis client. 
+Simple Spring Boot web appliation demonstrating the use of the [RateLimitJ](https://github.com/mokies/ratelimitj)
+library, using Redis as a back-end. 
 
 The integration test uses [TestContainers from JUnit 5](https://www.testcontainers.org/test_framework_integration/junit_5)
 to start a Redis instance in a Docker container.
@@ -40,7 +39,6 @@ The response should be something like this:
 
 ```
 HTTP/1.1 204 
-X-Rate-Limit-Remaining: 0
 Date: Sat, 24 Oct 2020 21:38:45 GMT
 ```
 
@@ -48,7 +46,6 @@ If you run the same request once more, you should get different output:
 
 ```
 HTTP/1.1 429 
-Retry-After: 86367
 Content-Length: 0
 Date: Sat, 24 Oct 2020 21:39:17 GMT
 ```
